@@ -7,18 +7,6 @@ from gevent.queue import Queue, Empty, Full
 from sqlalchemy.pool import Pool
 from sqlalchemy import exc
 
-class Singleton(type):
-    """Singleton Metaclass"""
-
-    def __init__(self, name, bases, dic):
-        super(Singleton, self).__init__(name, bases, dic)
-        self.instance = None
-
-    def __call__(self, *args, **kwargs):
-        if self.instance is None:
-            self.instance = super(Singleton, self).__call__(*args, **kwargs)
-        return self.instance
-
 class GreenletQueuePool(Pool):
 
     """A :class:`.Pool` that imposes a limit on the number of open connections.
@@ -27,7 +15,6 @@ class GreenletQueuePool(Pool):
     all :class:`.Engine` objects, unless the SQLite dialect is in use.
 
     """
-    __metaclass__ = Singleton
 
     def __init__(self, creator, pool_size=5, max_overflow=10, timeout=30,
                  **kw):
